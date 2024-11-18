@@ -1,4 +1,5 @@
 from init_data_dictionary import *
+from datetime import datetime
 
 # Function to refresh data dictionary
 def refresh_data_dictionary(json_file='data_dictionary.json', log_file='data_dictionary_changes.log',
@@ -125,11 +126,22 @@ def refresh_data_dictionary(json_file='data_dictionary.json', log_file='data_dic
     # Output changes log
     if changes_log:
         print("\nData dictionary has been updated with the following changes:")
+        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        
+        # Prepare log entry with timestamp header
+        log_entry = [
+            f"\n=== Changes made on {timestamp} ===",
+            *changes_log,
+            ""  # Empty line for separation
+        ]
+        
         for change in changes_log:
             print(f"- {change}")
-        # Save changes log to file
-        with open(log_file, 'w') as f:
-            f.write('\n'.join(changes_log))
+            
+        # Append changes log to file
+        with open(log_file, 'a') as f:
+            f.write('\n'.join(log_entry))
+        
         print(f"\nChanges have been logged to {log_file}.")
     else:
         print("\nNo changes were made to the data dictionary.")

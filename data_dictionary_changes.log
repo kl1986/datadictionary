@@ -1,1 +1,3 @@
-Column removed from products: in_stock_dummy
+New column added in users: user_id
+=== Changes made on 2024-11-18 12:55:53 ===
+New column added in users: username
