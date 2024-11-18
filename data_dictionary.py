@@ -1,3 +1,4 @@
+# %%
 # Import Libraries
 import sqlite3
 import pandas as pd
@@ -8,7 +9,6 @@ from tqdm import tqdm
 # Connect to SQLite database
 db_name = 'sample_database.db'
 conn = sqlite3.connect(db_name)
-
 
 # Function to fetch tables
 def fetch_tables():
@@ -88,6 +88,10 @@ def load_data_dictionary(json_file='data_dictionary.json'):
         print("No existing data dictionary found. Starting fresh.")
     return dd
 
+# Function to load data dictionary
+def load_data_dictionary(file_path='data_dictionary.json'):
+    with open(file_path, 'r') as file:
+        return json.load(file)
 
 # Function to build data dictionary from schema
 def build_data_dictionary_from_schema(tables_df, columns_df):
@@ -125,7 +129,7 @@ def update_column_metadata(dd, cols):
         for column_name in column:
             column_data = table_data['columns'][column_name]
             data_type = column_data['data_type'].lower()
-            if data_type in ['integer', 'real', 'numeric', 'decimal', 'float', 'double']:
+            if data_type in ['integer', 'real', 'numeric', 'decimal', 'float', 'double', 'date', 'datetime']:
                 column_data['type'] = 'continuous'
                 try:
                     min_val, max_val, unique_count = get_column_stats(table, column_name)
@@ -319,7 +323,6 @@ data_dictionary = load_data_dictionary()
 refresh_data_dictionary()
 
 
-
 #%%
 # Close the database connection
-conn.close()
+#conn.close()
