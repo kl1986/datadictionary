@@ -1,4 +1,4 @@
-from data_dictionary import *
+from init_data_dictionary import *
 
 # Function to refresh data dictionary
 def refresh_data_dictionary(json_file='data_dictionary.json', log_file='data_dictionary_changes.log',
