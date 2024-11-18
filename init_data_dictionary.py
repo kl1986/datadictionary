@@ -56,56 +56,17 @@ The module requires an active SQLite database connection and appropriate read pe
 It maintains a JSON-based data dictionary that tracks schema changes and column metadata.
 """
 
-
 # Import Libraries
 import sqlite3
 import pandas as pd
 import json
 import datetime
 from tqdm import tqdm
-
-# Connect to SQLite database
-db_name = 'sample_database.db'
-conn = sqlite3.connect(db_name)
-
-# Function to fetch tables
-def fetch_tables():
-    query = """
-    SELECT
-        name AS table_name
-    FROM sqlite_master
-    WHERE type = 'table' AND name NOT LIKE 'sqlite_%';
-    """
-    tables_df = pd.read_sql_query(query, conn)
-    # Add a placeholder for table_owner
-    tables_df['table_owner'] = 'N/A'
-    return tables_df
-
-
-# Function to fetch columns
-def fetch_columns():
-    # Retrieve all table names
-    tables_df = fetch_tables()
-    columns_list = []
-
-    for table_name in tables_df['table_name']:
-        # PRAGMA table_info returns information about each column in the table
-        pragma_query = f"PRAGMA table_info('{table_name}');"
-        pragma_df = pd.read_sql_query(pragma_query, conn)
-        for index, row in pragma_df.iterrows():
-            column_info = {
-                'table_name': table_name,
-                'column_name': row['name'],
-                'data_type': row['type'],
-                'is_nullable': 'NO' if row['notnull'] else 'YES',
-            }
-            columns_list.append(column_info)
-    columns_df = pd.DataFrame(columns_list)
-    return columns_df
+from db_conn import get_conn, fetch_columns, fetch_tables
 
 
 # Function to get column stats
-def get_column_stats(table_name, column_name):
+def get_column_stats(table_name, column_name, conn):
     query = f"""
     SELECT
         MIN({column_name}) AS min_val,
@@ -181,7 +142,7 @@ def build_data_dictionary_from_schema(tables_df, columns_df):
 
 
 # Function to update column metadata
-def update_column_metadata(dd, cols):
+def update_column_metadata(dd, cols, conn):
     for table, column in tqdm(cols.items(), desc='Updating Metadata for Columns'):
         table_data = dd[table]
         for column_name in column:
@@ -192,7 +153,7 @@ def update_column_metadata(dd, cols):
             if data_type in ['integer', 'real', 'numeric', 'decimal', 'float', 'double', 'date', 'datetime', 'timestamp']:
                 column_data['type'] = 'continuous'
                 try:
-                    min_val, max_val, unique_count = get_column_stats(table, column_name)
+                    min_val, max_val, unique_count = get_column_stats(table, column_name, conn)
                     # Convert dates to strings if necessary
                     if isinstance(min_val, (datetime.datetime, datetime.date)):
                         min_val = min_val.isoformat()
@@ -214,7 +175,8 @@ def update_column_metadata(dd, cols):
                         v.isoformat() if isinstance(v, (datetime.datetime, datetime.date)) else v
                         for v in values
                     ]
-                    column_data['allowable_values'] = values
+                    if len(values) < 20:
+                        column_data['allowable_values'] = values
                     column_data['unique_count'] = len(values)
                 except Exception as e:
                     print(f"Error processing {table}.{column_name}: {e}")
@@ -231,13 +193,14 @@ def get_all_tables_and_columns(dd):
 # Initiate the data dictionary
 if __name__ == '__main__':
 
-    tables = fetch_tables()
-    columns = fetch_columns()
+    conn = get_conn()
+    tables = fetch_tables(conn)
+    columns = fetch_columns(conn)
     data_dictionary = build_data_dictionary_from_schema(tables, columns)
 
     # %%
     columns_to_update = get_all_tables_and_columns(data_dictionary)
-    update_column_metadata(data_dictionary, columns_to_update)
+    update_column_metadata(data_dictionary, columns_to_update, conn)
     save_data_dictionary(data_dictionary)
 
     #%%

@@ -1,21 +1,24 @@
 # Database Quality Check System
 
-A Python-based system for performing data quality checks on SQLite databases using a data dictionary approach.
+A Python-based system for performing data quality checks on databases using a data dictionary approach.
 
 ## Overview
 
 This project consists of several components that work together to create and validate a SQLite database:
 
 1. Database creation and sample data population
-2. Data quality validation
+2. Data dictionary creation
 3. Data dictionary management
+3. Data quality validation
 
 ## Project Structure
 
 - [create_sample_db.py](create_sample_db.py) - Creates a sample SQLite database with test data
 - [data_quality_checks.py](data_quality_checks.py) - Performs data validation and quality checks
-- [data_dictionary.py](data_dictionary.py) - Manages the data dictionary configuration
+- [init_data_dictionary.py](data_dictionary.py) - Manages the data dictionary configuration
+- [refresh_data_dictionary.py](refresh_data_dictionary.py) - Checks the database for any new/deleted tables/columns
 - [data_dictionary.json](data_dictionary.json) - Stores data validation rules and constraints
+- [db_conn.py](db_conn.py) - creates connection to database, currently set to use sample sqlite db but can be changed to use any database
 
 ## Database Schema
 
@@ -42,7 +45,13 @@ The sample database contains three main tables:
 
 ## Setup and Usage
 
-1. Create the sample database:
+1. Clone repo
+
+2. Set up connection to database
+
+Goto ```db_conn.py``` and set up relevant connection.  Note that it is recommended that you create a ```env.py``` (DO NOT COMMIT) and store your credentials there or set them up as environmental variables if you can do so.
+
+3. (OPTIONAL) Create the sample database:
 ```python
 python [create_sample_db.py]
 ```
@@ -53,13 +62,19 @@ python [create_sample_db.py]
 python [data_dictionary.py]
 ```
 
-This will initiate the data dictionary structure, however the metadata and other constraints will need to be added
+This will initiate the data dictionary structure, however the metadata and other constraints will need to be added/edited in 
+
+```
+[data_dictionary.json]
+```
 
 3. Run data quality checks:
 
 ```python
 python [data_quality_checks.py]
 ```
+
+You can then review the results in the log file ```DQ_Report_{DATETIMESTAMP}.log```
 
 ## Dependencies
 - pandas

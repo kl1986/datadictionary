@@ -1,8 +1,9 @@
 from init_data_dictionary import *
 from datetime import datetime
+from db_conn import get_conn, fetch_tables, fetch_columns
 
 # Function to refresh data dictionary
-def refresh_data_dictionary(json_file='data_dictionary.json', log_file='data_dictionary_changes.log',
+def refresh_data_dictionary(conn, json_file='data_dictionary.json', log_file='data_dictionary_changes.log',
                             update_all_columns=False):
     # Load existing data dictionary
     existing_data_dictionary = load_data_dictionary(json_file)
@@ -11,8 +12,8 @@ def refresh_data_dictionary(json_file='data_dictionary.json', log_file='data_dic
     initial_run = not bool(existing_data_dictionary)
 
     # Fetch current schema
-    tables_df = fetch_tables()
-    columns_df = fetch_columns()
+    tables_df = fetch_tables(conn)
+    columns_df = fetch_columns(conn)
 
     # Build new data dictionary from current schema
     new_data_dictionary = build_data_dictionary_from_schema(tables_df, columns_df)
@@ -116,7 +117,7 @@ def refresh_data_dictionary(json_file='data_dictionary.json', log_file='data_dic
 
     # Update column metadata
     if columns_to_update:
-        update_column_metadata(existing_data_dictionary, columns_to_update)
+        update_column_metadata(existing_data_dictionary, columns_to_update, conn)
     else:
         print("\nNo columns to update metadata for.")
 
@@ -149,7 +150,8 @@ def refresh_data_dictionary(json_file='data_dictionary.json', log_file='data_dic
 # %%
 # Initiate the data dictionary
 if __name__ == '__main__':
-    refresh_data_dictionary()
+    conn = get_conn()
+    refresh_data_dictionary(conn)
 
     #%%
     # Close the database connection

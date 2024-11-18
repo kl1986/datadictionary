@@ -37,58 +37,21 @@ import pandas as pd
 import json
 import logging
 from datetime import datetime
+from db_conn import get_conn, fetch_tables, fetch_columns
+
+conn = get_conn()
 
 # Setup logging
-log_filename = f'data_quality_check_{datetime.now().strftime("%Y%m%d_%H%M%S")}.log'
+log_filename = f'DQ_Report_{datetime.now().strftime("%Y%m%d_%H%M%S")}.log'
 logging.basicConfig(
     filename=log_filename,
     level=logging.INFO,
     format='%(asctime)s - %(levelname)s - %(message)s'
 )
 
-# Connect to SQLite database
-db_name = 'sample_database.db'
-conn = sqlite3.connect(db_name)
-
-
-# Function to fetch tables
-def fetch_tables():
-    query = """
-    SELECT
-        name AS table_name
-    FROM sqlite_master
-    WHERE type = 'table' AND name NOT LIKE 'sqlite_%';
-    """
-    tables_df = pd.read_sql_query(query, conn)
-    # Add a placeholder for table_owner
-    tables_df['table_owner'] = 'N/A'
-    return tables_df
-
-
-# Function to fetch columns
-def fetch_columns():
-    # Retrieve all table names
-    tables_df = fetch_tables()
-    columns_list = []
-
-    for table_name in tables_df['table_name']:
-        # PRAGMA table_info returns information about each column in the table
-        pragma_query = f"PRAGMA table_info('{table_name}');"
-        pragma_df = pd.read_sql_query(pragma_query, conn)
-        for index, row in pragma_df.iterrows():
-            column_info = {
-                'table_name': table_name,
-                'column_name': row['name'],
-                'data_type': row['type'],
-                'is_nullable': 'NO' if row['notnull'] else 'YES',
-            }
-            columns_list.append(column_info)
-    columns_df = pd.DataFrame(columns_list)
-    return columns_df
-
 # Fetch tables and columns with constraints
-tables_df = fetch_tables()
-columns_df = fetch_columns()
+tables_df = fetch_tables(conn)
+columns_df = fetch_columns(conn)
 
 # Process each table
 for table in tables_df['table_name']:
