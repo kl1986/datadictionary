@@ -16,7 +16,7 @@ This project consists of several components that work together to create and val
 - [create_sample_db.py](create_sample_db.py) - Creates a sample SQLite database with test data
 - [data_quality_checks.py](data_quality_checks.py) - Performs data validation and quality checks
 - [init_data_dictionary.py](data_dictionary.py) - Manages the data dictionary configuration
-- [refresh_data_dictionary.py](refresh_data_dictionary.py) - Checks the database for any new/deleted tables/columns
+- [refresh_data_dictionary.py](refresh_data_dictionary.py) - Checks the database for any new/deleted tables/columns and prompts user on whether to add/del from the data dictionary
 - [data_dictionary.json](data_dictionary.json) - Stores data validation rules and constraints
 - [db_conn.py](db_conn.py) - creates connection to database, currently set to use sample sqlite db but can be changed to use any database
 
@@ -56,7 +56,7 @@ Goto ```db_conn.py``` and set up relevant connection.  Note that it is recommend
 python [create_sample_db.py]
 ```
 
-2. Create the data dictionary:
+4. Create the data dictionary:
 
 ```python
 python [data_dictionary.py]
@@ -68,7 +68,17 @@ This will initiate the data dictionary structure, however the metadata and other
 [data_dictionary.json]
 ```
 
-3. Run data quality checks:
+5. Update the data dictionary
+
+    5a. Create a new branch
+
+    5b. Open ```data_dictionary.json``` and navigate to the table / column that you own.  Update the relevant fields and save the file.
+
+    5c. Update the main branch by commit, pushing the changes and then submitting a pull request
+
+
+
+6. Run and view data quality checks:
 
 ```python
 python [data_quality_checks.py]
@@ -78,8 +88,11 @@ You can then review the results in the log file ```DQ_Report_{DATETIMESTAMP}.log
 
 ## Dependencies
 - pandas
-- sqlite3
+- sqlite3 (or other database connection library you are using)
 - json
+- logging
+- datetime
+- tqdm
 
 ## Data Quality Checks
 The system performs various data quality validations including:
