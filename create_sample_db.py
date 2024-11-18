@@ -1,4 +1,44 @@
-# Import Libraries
+"""
+Creates a sample SQLite database with users, orders, and products tables.
+
+This script initializes a SQLite database with three related tables and populates them
+with sample data. The database schema includes:
+
+Tables:
+    users:
+        - user_id (INTEGER PRIMARY KEY)
+        - username (TEXT)
+        - email (TEXT)
+        - created_at (DATE)
+
+    orders:
+        - order_id (INTEGER PRIMARY KEY)
+        - user_id (INTEGER, FOREIGN KEY)
+        - product_id (INTEGER)
+        - quantity (INTEGER)
+        - order_date (TIMESTAMP)
+
+    products:
+        - product_id (INTEGER PRIMARY KEY)
+        - product_name (TEXT)
+        - price (REAL)
+        - in_stock (INTEGER)
+
+Args:
+    db_name (str, optional): Name of the database file to create. 
+                            Defaults to 'sample_database.db'.
+
+Returns:
+    None: Prints a success message upon completion.
+
+Example:
+    >>> create_sample_database()
+    Sample database 'sample_database.db' created successfully.
+
+    >>> create_sample_database('custom.db')
+    Sample database 'custom.db' created successfully.
+"""
+#Import Libraries
 import sqlite3
 
 # Function to create a sample SQLite database

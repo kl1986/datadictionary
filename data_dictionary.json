@@ -10,8 +10,8 @@
                 "duplicates_allowed": true,
                 "null_values_allowed": true,
                 "min_value": 1,
-                "max_value": 30,
-                "unique_count": 30,
+                "max_value": 22,
+                "unique_count": 31,
                 "zero_allowed": false
             },
             "username": {
@@ -58,11 +58,17 @@
                 "description": "",
                 "data_type": "TEXT",
                 "type": "",
-                "duplicates_allowed": false,
+                "duplicates_allowed": true,
                 "null_values_allowed": true,
                 "allowable_values": [
                     "alice@example.com",
                     "bob@example.com",
+                    "charlie@example.com",
+                    "david@example.com",
+                    "eve@example.com",
+                    "frank@example.com",
+                    "grace@example.com",
+                    "heidi@example.com",
                     "ivan@example.com",
                     "judy@example.com",
                     "mallory@example.com",
@@ -145,7 +151,7 @@
                 "duplicates_allowed": true,
                 "null_values_allowed": true,
                 "min_value": 1,
-                "max_value": 2,
+                "max_value": 3,
                 "unique_count": 3,
                 "zero_allowed": false
             },
@@ -156,7 +162,7 @@
                 "duplicates_allowed": true,
                 "null_values_allowed": true,
                 "min_value": "2021-05-10 10:00:00",
-                "max_value": "2021-10-20 12:00:00",
+                "max_value": "2023-10-20 12:00:00",
                 "unique_count": 30,
                 "zero_allowed": false
             }
