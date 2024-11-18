@@ -7,7 +7,7 @@
                 "description": "",
                 "data_type": "TEXT",
                 "type": "",
-                "duplicates_allowed": true,
+                "duplicates_allowed": false,
                 "null_values_allowed": true,
                 "allowable_values": [
                     "alice@example.com",
@@ -118,7 +118,7 @@
                 "duplicates_allowed": true,
                 "null_values_allowed": true,
                 "min_value": 1,
-                "max_value": 30,
+                "max_value": 29,
                 "unique_count": 30,
                 "zero_allowed": false
             },
