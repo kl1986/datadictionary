@@ -96,7 +96,8 @@ def create_sample_database(db_name='sample_database.db'):
         (27, 'hannah', 'hannah@example.com', '2023-03-05'),
         (28, 'ian', 'ian@example.com', '2023-04-10'),
         (29, 'jane', 'jane@example.com', '2023-05-15'),
-        (30, 'kyle', 'kyle@example.com', '2023-06-20')
+        (30, 'kyle', 'kyle@example.com', '2023-06-20'),
+        (31, 'kyle', 'kyle@example.com', '2023-06-20')
     ]
     cursor.executemany('INSERT INTO users VALUES (?, ?, ?, ?)', additional_users_data)
 

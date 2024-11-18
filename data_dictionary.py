@@ -129,7 +129,9 @@ def update_column_metadata(dd, cols):
         for column_name in column:
             column_data = table_data['columns'][column_name]
             data_type = column_data['data_type'].lower()
-            if data_type in ['integer', 'real', 'numeric', 'decimal', 'float', 'double', 'date', 'datetime']:
+            print(f"Processing {table}.{column_name} with datatype: {data_type}")
+            column_data['type'] = 'categorical'  # Set a default type
+            if data_type in ['integer', 'real', 'numeric', 'decimal', 'float', 'double', 'date', 'datetime', 'timestamp']:
                 column_data['type'] = 'continuous'
                 try:
                     min_val, max_val, unique_count = get_column_stats(table, column_name)
@@ -145,7 +147,6 @@ def update_column_metadata(dd, cols):
                 except Exception as e:
                     print(f"Error processing {table}.{column_name}: {e}")
             else:
-                column_data['type'] = 'categorical'
                 try:
                     query = f"SELECT DISTINCT {column_name} FROM {table} LIMIT 100"
                     values_df = pd.read_sql_query(query, conn)

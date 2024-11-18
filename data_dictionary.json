@@ -3,6 +3,17 @@
         "description": "",
         "table_owner": "N/A",
         "columns": {
+            "user_id": {
+                "description": "",
+                "data_type": "INTEGER",
+                "type": "",
+                "duplicates_allowed": true,
+                "null_values_allowed": true,
+                "min_value": 1,
+                "max_value": 30,
+                "unique_count": 30,
+                "zero_allowed": false
+            },
             "username": {
                 "description": "",
                 "data_type": "TEXT",
@@ -47,17 +58,11 @@
                 "description": "",
                 "data_type": "TEXT",
                 "type": "",
-                "duplicates_allowed": true,
+                "duplicates_allowed": false,
                 "null_values_allowed": true,
                 "allowable_values": [
                     "alice@example.com",
                     "bob@example.com",
-                    "charlie@example.com",
-                    "david@example.com",
-                    "eve@example.com",
-                    "frank@example.com",
-                    "grace@example.com",
-                    "heidi@example.com",
                     "ivan@example.com",
                     "judy@example.com",
                     "mallory@example.com",
@@ -92,14 +97,6 @@
                 "min_value": "2021-01-15",
                 "max_value": "2023-06-20",
                 "unique_count": 30,
-                "zero_allowed": false
-            },
-            "user_id": {
-                "description": "",
-                "data_type": "INTEGER",
-                "type": "",
-                "duplicates_allowed": true,
-                "null_values_allowed": true,
                 "zero_allowed": false
             }
         }
@@ -148,7 +145,7 @@
                 "duplicates_allowed": true,
                 "null_values_allowed": true,
                 "min_value": 1,
-                "max_value": 3,
+                "max_value": 2,
                 "unique_count": 3,
                 "zero_allowed": false
             },
@@ -158,39 +155,10 @@
                 "type": "",
                 "duplicates_allowed": true,
                 "null_values_allowed": true,
-                "allowable_values": [
-                    "2021-05-10 10:00:00",
-                    "2021-06-15 11:00:00",
-                    "2021-07-20 12:00:00",
-                    "2021-08-10 10:00:00",
-                    "2021-09-15 11:00:00",
-                    "2021-10-20 12:00:00",
-                    "2021-11-25 13:00:00",
-                    "2021-12-30 14:00:00",
-                    "2022-01-05 15:00:00",
-                    "2022-02-10 16:00:00",
-                    "2022-03-15 17:00:00",
-                    "2022-04-20 18:00:00",
-                    "2022-05-25 19:00:00",
-                    "2022-06-30 20:00:00",
-                    "2022-07-05 21:00:00",
-                    "2022-08-10 22:00:00",
-                    "2022-09-15 23:00:00",
-                    "2022-10-20 00:00:00",
-                    "2022-11-25 01:00:00",
-                    "2022-12-30 02:00:00",
-                    "2023-01-05 03:00:00",
-                    "2023-02-10 04:00:00",
-                    "2023-03-15 05:00:00",
-                    "2023-04-20 06:00:00",
-                    "2023-05-25 07:00:00",
-                    "2023-06-30 08:00:00",
-                    "2023-07-05 09:00:00",
-                    "2023-08-10 10:00:00",
-                    "2023-09-15 11:00:00",
-                    "2023-10-20 12:00:00"
-                ],
-                "unique_count": 30
+                "min_value": "2021-05-10 10:00:00",
+                "max_value": "2021-10-20 12:00:00",
+                "unique_count": 30,
+                "zero_allowed": false
             }
         }
     },
